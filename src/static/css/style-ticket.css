@@ -1,0 +1,102 @@
+/* Resetear estilos por defecto */
+body, h2, table {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: 'Courier New', monospace;
+}
+
+/* Estilo del cuerpo */
+body {
+    background-color: #eaeae5; /* Fondo gris hueso */
+    margin: 20px;
+    padding: 20px;
+}
+
+/* Estilo de la tabla */
+table {
+    width: 80%; /* Reducción del ancho de la tabla */
+    margin: 20px auto; /* Centrar la tabla */
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 10px; /* Reducción del espacio interno */
+}
+
+th {
+    background-color: #492d08;
+    color: #ececec; /* Café oscuro */
+}
+
+/* Estilo del título */
+h2 {
+    text-align: center;
+    font-size: 1.5em; /* Reducción del tamaño del título */
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Estilo del pie de página */
+#total-general {
+    text-align: right;
+    font-size: 1.2em; /* Reducción del tamaño del texto */
+    margin-top: 20px;
+    color: #333;
+}
+
+/* Estilo del contenedor de notas */
+.notas {
+    background-color: #eaeae5; /* Fondo gris hueso */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Estilo de la imagen */
+img {
+    max-width: 200px;
+    height: auto;
+    margin-top: 20px;
+    display: block; /* Hace que la imagen sea un bloque para poder centrarla horizontalmente */
+    margin-left: auto; /* Centra la imagen horizontalmente */
+    margin-right: auto; /* Centra la imagen horizontalmente */
+}
+
+
+/* Estilo de la tabla de productos */
+tr:nth-child(even) {
+    background-color: #f3dbbf;
+}
+
+tr:nth-child(odd) {
+    background-color: #e2cdb2;
+}
+
+/* Estilo responsivo para la tabla */
+@media (max-width: 600px) {
+    table {
+        width: 100%; /* Hacer la tabla ocupar todo el ancho en dispositivos pequeños */
+        margin: 10px 0;
+    }
+    th, td {
+        padding: 8px; /* Reducción del espacio interno en dispositivos pequeños */
+        font-size: 0.8em;
+    }
+    h2 {
+        font-size: 1.2em; /* Reducción del tamaño del título en dispositivos pequeños */
+    }
+    #total-general {
+        font-size: 1em; /* Reducción del tamaño del texto en dispositivos pequeños */
+    }
+    .notas {
+        padding: 10px;
+    }
+}

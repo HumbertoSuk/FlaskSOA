@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee & Dreams - Catálogo de Productos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Coffee & Dreams Logo">
+            <h2 id="username-display"></h2>
+            <h2>Coffee & Dreams (๑>◡<๑)</h2>
+            <h3>User: {{ current_user.fullname }}</h3>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('principal') }}">Inicio</a></li>
+                {% if current_user.usertype == 1 %}
+                    <li id="catalog-link"><a href="{{ url_for('mostrar_productos') }}">Catálogo</a></li>
+                    <li><a href="{{ url_for('mostrar_usuarios') }}">Usuarios</a></li>
+                    <li><a href="{{ url_for('ventas') }}">Ventas</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                <li><a href="{{ url_for('acerca') }}">Acerca de</a></li>
+            </ul>
+        </nav>
+        <h3></h3>
+        <a class="btn btn-logout" href="{{ url_for('logout') }}">LogOut</a>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Catálogo de Productos</h1>
+
+            <!-- Formulario para agregar producto -->
+            <div class="form-container">
+                <form action="{{ url_for('agregar_producto') }}" method="post">
+                    <div class="mb-3">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imagen">Imagen URL</label>
+                        <input type="text" class="form-control" id="imagen" name="imagen" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precio">Precio</label>
+                        <input type="number" class="form-control" id="precio" name="precio" required>
+                    </div>
+                    <button type="submit" class="btn">Agregar Producto</button>
+                </form>
+            </div>
+
+            <!-- Tabla de productos -->
+            <table class="table" id="catalogo-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Imagen</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Llenar dinámicamente la tabla con productos -->
+                    {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.id }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td><img src="{{ producto.imagen }}" alt="Imagen del producto"></td>
+                            <td>{{ producto.precio }}</td>
+                            <td>
+                                <!-- Botón para editar producto -->
+                                <button class="btn btn-warning editar-producto"
+                                        data-id="{{ producto.id }}"
+                                        data-nombre="{{ producto.nombre|e }}"
+                                        data-imagen="{{ producto.imagen|e }}"
+                                        data-precio="{{ producto.precio }}">
+                                    Editar
+                                </button>
+
+                                <!-- Formulario para eliminar producto con confirmación en JavaScript -->
+                                <form id="eliminarForm{{ producto.id }}"
+                                      action="{{ url_for('eliminar_producto', id=producto.id) }}"
+                                      method="post">
+                                    <button type="button" class="btn btn-danger eliminar-producto"
+                                            data-id="{{ producto.id }}"
+                                            data-nombre="{{ producto.nombre }}">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Overlay y formulario de edición -->
+        
+        <div class="overlay"></div>
+        <div class="modal" id="formularioEdicion">
+            <span class="close-button" onclick="cerrarFormularioEdicion()"></span>
+            <h1>Editar Producto</h1>
+            <form id="editarProductoForm">
+                <input type="hidden" id="editarId">
+                <div class="mb-3">
+                    <label for="editarNombre">Nombre (Descripción)</label>
+                    <input type="text" class="form-control" id="editarNombre" name="nombre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="editarImagen">URL de la Imagen</label>
+                    <input type="text" class="form-control" id="editarImagen" name="imagen" required>
+                </div>
+                <div class="mb-3">
+                    <label for="editarPrecio">Precio</label>
+                    <input type="number" class="form-control" id="editarPrecio" name="precio" required>
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="editarProducto()">Guardar Cambios</button>
+            </form>
+        </div>
+
+
+        <div class="calculator-button" id="toggle-calculator">Calculadora</div>
+        
+        <div class="calculator-container">
+            <div class="calculator">
+                <input type="text" id="display" value="0" readonly>
+                <div class="buttons">
+                    <button class="operator" value="+">+</button>
+                    <button class="operator" value="-">-</button>
+                    <button class="operator" value="*">*</button>
+                    <button class="operator" value="/">/</button>
+                    <button value="1">1</button>
+                    <button value="2">2</button>
+                    <button value="3">3</button>
+                    <button value="4">4</button>
+                    <button value="5">5</button>
+                    <button value="6">6</button>
+                    <button value="7">7</button>
+                    <button value="8">8</button>
+                    <button value="9">9</button>
+                    <button value="0">0</button>
+                    <button value="." class="decimal">.</button>
+                    <button id="clear" class="clear">C</button>
+                    <button id="calculate" class="equal">=</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+    
+    $(document).ready(function () {
+
+            // Función para cerrar el formulario de edición
+            document.querySelector('.close-button').addEventListener('click', function() {
+                $('#formularioEdicion').hide();
+                $('.overlay').hide();
+                document.getElementById('formularioEdicion').style.display = 'none';
+            });
+
+            // Función para cargar y actualizar la tabla de productos
+            function cargarProductos() {
+                $.ajax({
+                    url: '{{ url_for("mostrar_productos") }}',
+                    type: 'GET',
+                    success: function (data) {
+                        // Actualiza la sección de la tabla con los nuevos datos
+                        $('#catalogo-table').html($(data).find('#catalogo-table').html());
+                    },
+                    error: function (error) {
+                        console.error('Error al cargar los productos:', error);
+                    }
+                });
+            }
+
+            // Llama a cargarProductos al cargar la página
+            cargarProductos();
+
+            // Función para confirmar la eliminación
+            $(document).on('click', '.eliminar-producto', function () {
+                var id = $(this).data('id');
+                var nombre = $(this).data('nombre');
+                var confirmacion = confirm("¿Estás seguro de eliminar el producto '" + nombre + "'?");
+                if (confirmacion) {
+                    document.getElementById('eliminarForm' + id).submit();
+                }
+            });
+
+            // Función para cerrar el formulario de edición
+            function cerrarFormularioEdicion() {
+                $('#formularioEdicion').hide();
+                $('.overlay').hide();
+                
+            }
+
+            // Función para mostrar el formulario de edición con los datos del producto
+            $(document).on('click', '.editar-producto', function () {
+                var id = $(this).data('id');
+                var nombre = $(this).data('nombre');
+                var imagen = $(this).data('imagen');
+                var precio = $(this).data('precio');
+
+                // Asigna los valores a los campos del formulario de edición
+                $('#editarId').val(id);
+                $('#editarNombre').val(nombre);
+                $('#editarImagen').val(imagen);
+                $('#editarPrecio').val(precio);
+
+                // Muestra el formulario de edición
+                $('#formularioEdicion').show();
+                $('.overlay').show();
+            });
+
+            // Función para enviar la solicitud de edición del producto
+            $('#editarProductoForm').submit(function (event) {
+                event.preventDefault();
+                var id = $('#editarId').val();
+                var nuevoNombre = $('#editarNombre').val();
+                var nuevaImagen = $('#editarImagen').val();
+                var nuevoPrecio = $('#editarPrecio').val();
+
+                // Realiza la solicitud de edición mediante AJAX
+                $.ajax({
+                    url: '{{ url_for("editar_producto", id=0) }}' + id,
+                    type: 'POST',
+                    data: {
+                        nombre: nuevoNombre,
+                        imagen: nuevaImagen,
+                        precio: nuevoPrecio
+                    },
+                    success: function (data) {
+                        // Cierra el formulario de edición
+                        cerrarFormularioEdicion();
+
+                        // Recarga la tabla de productos
+                        cargarProductos();
+                    },
+                    error: function (error) {
+                        console.error('Error al editar el producto:', error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script src="{{ url_for('static', filename='js/scriptCalculadora.js') }}"></script>
+</body>
+
+</html>

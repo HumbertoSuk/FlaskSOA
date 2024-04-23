@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee & Dreams - Gestión de Usuarios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Coffee & Dreams Logo">
+            <h2 id="username-display"></h2>
+            <h2>Coffee & Dreams (๑>◡<๑)</h2>
+            <h3>User: {{ current_user.fullname }}</h3>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('principal') }}">Inicio</a></li>
+                {% if current_user.usertype == 1 %}
+                    <li id="catalog-link"><a href="{{ url_for('mostrar_productos') }}">Catálogo</a></li>
+                    <li><a href="{{ url_for('mostrar_usuarios') }}">Usuarios</a></li>
+                    <li><a href="{{ url_for('ventas') }}">Ventas</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                <li><a href="{{ url_for('acerca') }}">Acerca de</a></li>
+            </ul>
+            <h3></h3>
+        </nav>
+        <a class="btn btn-logout" href="{{ url_for('logout') }}">LogOut</a>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Gestión de Usuarios</h1>
+
+            <!-- Formulario para agregar usuario -->
+            <div class="form-container">
+                <form action="{{ url_for('agregar_usuario') }}" method="post">
+                    <div class="mb-3">
+                        <label for="username">Nombre de Usuario</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fullname">Nombre Completo</label>
+                        <input type="text" class="form-control" id="fullname" name="fullname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="usertype">Tipo de Usuario</label>
+                        <select class="form-control" id="usertype" name="usertype" required>
+                            <option value="1">Administrador</option>
+                            <option value="2">Usuario Normal</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Agregar Usuario</button>
+                </form>
+            </div>
+
+            <!-- Tabla de usuarios -->
+<table class="table" id="usuarios-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre de Usuario</th>
+            <th>Nombre Completo</th>
+            <th>Tipo de Usuario</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Llenar dinámicamente la tabla con usuarios -->
+        {% for usuario in usuarios %}
+            <tr>
+                <td>{{ usuario.id }}</td>
+                <td>{{ usuario.username }}</td>
+                <td>{{ usuario.fullname }}</td>
+                <td>{{ 'Admin' if usuario.usertype == 1 else 'Usuario'}}</td>
+                <td>
+                        <!-- Botón para editar usuario -->
+                        <button class="btn btn-warning editar-usuario"
+                        data-id="{{ usuario.id }}"
+                        data-username="{{ usuario.username|e }}"
+                        data-fullname="{{ usuario.fullname|e }}"
+                        data-usertype="{{ usuario.usertype }}">
+                    Editar
+                </button>
+
+                <!-- Formulario para eliminar usuario con confirmación en JavaScript -->
+                <form id="eliminarUsuarioForm{{ usuario.id }}"
+                        action="{{ url_for('eliminar_usuario', id=usuario.id) }}"
+                        method="post">
+                    <button type="button" class="btn btn-danger eliminar-usuario"
+                            data-id="{{ usuario.id }}"
+                            data-username="{{ usuario.username }}">
+                        Eliminar
+                    </button>
+                </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+          
+
+                <!-- Sección de formulario de edición -->
+                <div class="overlay"></div>
+                <div class="modal" id="formularioEdicion">
+                    <span class="close-button" onclick="cerrarFormularioEdicion()"></span>
+                    <h1>Editar Usuario</h1>
+                    <form id="editarUsuarioForm" method="POST">
+                        <input type="hidden" id="editarId">
+                        <div class="mb-3">
+                            <label for="editarUsername">Nombre de Usuario</label>
+                            <input type="text" class="form-control" id="editarUsername" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarFullname">Nombre Completo</label>
+                            <input type="text" class="form-control" id="editarFullname" name="fullname" required>
+                        </div>
+                        <!-- Agregado campo para editar la contraseña -->
+                        <div class="mb-3">
+                            <label for="editarPassword">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="editarPassword" name="password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarUsertype">Tipo de Usuario</label>
+                            <select class="form-control" id="editarUsertype" name="usertype" required>
+                                <option value="1">Administrador</option>
+                                <option value="2">Usuario Normal</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                </div>
+
+
+
+        <div class="calculator-button" id="toggle-calculator">Calculadora</div>
+        
+        <div class="calculator-container">
+            <div class="calculator">
+                <input type="text" id="display" value="0" readonly>
+                <div class="buttons">
+                    <button class="operator" value="+">+</button>
+                    <button class="operator" value="-">-</button>
+                    <button class="operator" value="*">*</button>
+                    <button class="operator" value="/">/</button>
+                    <button value="1">1</button>
+                    <button value="2">2</button>
+                    <button value="3">3</button>
+                    <button value="4">4</button>
+                    <button value="5">5</button>
+                    <button value="6">6</button>
+                    <button value="7">7</button>
+                    <button value="8">8</button>
+                    <button value="9">9</button>
+                    <button value="0">0</button>
+                    <button value="." class="decimal">.</button>
+                    <button id="clear" class="clear">C</button>
+                    <button id="calculate" class="equal">=</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+                 // Función para cerrar el formulario de edición
+                 document.querySelector('.close-button').addEventListener('click', function() {
+                $('#formularioEdicion').hide();
+                $('.overlay').hide();
+                document.getElementById('formularioEdicion').style.display = 'none';
+            });
+
+          $(document).ready(function () {
+        // Función para cargar y actualizar la tabla de usuarios
+        function cargarUsuarios() {
+            $.ajax({
+                url: '{{ url_for("mostrar_usuarios") }}',
+                type: 'GET',
+                success: function (data) {
+                    // Actualiza la sección de la tabla con los nuevos datos
+                    $('#usuarios-table').html($(data).find('#usuarios-table').html());
+                },
+                error: function (error) {
+                    console.error('Error al cargar los usuarios:', error);
+                }
+            });
+        }
+
+        // Llama a cargarUsuarios al cargar la página
+        cargarUsuarios();
+
+        // Función para confirmar la eliminación de usuario
+        $(document).on('click', '.eliminar-usuario', function () {
+            var id = $(this).data('id');
+            var username = $(this).data('username');
+            var confirmacion = confirm("¿Estás seguro de eliminar al usuario '" + username + "'?");
+            if (confirmacion) {
+                document.getElementById('eliminarUsuarioForm' + id).submit();
+            }
+        });
+
+        $(document).on('click', '.editar-usuario', function () {
+    var id = $(this).data('id');
+    var username = $(this).data('username');
+    var fullname = $(this).data('fullname');
+    var usertype = $(this).data('usertype');
+
+    // Asigna los valores a los campos del formulario de edición
+    $('#editarId').val(id);
+    $('#editarUsername').val(username);
+    $('#editarFullname').val(fullname);
+    $('#editarUsertype').val(usertype);
+
+    // Muestra el formulario de edición
+    $('#formularioEdicion').show();
+    $('.overlay').show();
+});
+
+// Función para enviar la solicitud de edición del usuario
+$('#editarUsuarioForm').submit(function (event) {
+    event.preventDefault();
+    var id = $('#editarId').val();
+    var nuevoUsername = $('#editarUsername').val();
+    var nuevoFullname = $('#editarFullname').val();
+    var nuevoPassword = $('#editarPassword').val(); // Nuevo campo de contraseña
+    var nuevoUsertype = $('#editarUsertype').val();
+
+    // Realiza la solicitud de edición mediante AJAX
+    $.ajax({
+        url: '{{ url_for("editar_usuario", usuario_id=0) }}' + id,
+        type: 'POST',
+        data: {
+            username: nuevoUsername,
+            fullname: nuevoFullname,
+            password: nuevoPassword, // Incluye la nueva contraseña
+            usertype: nuevoUsertype
+        },
+        success: function (data) {
+            // Cierra el formulario de edición
+            cerrarFormularioEdicion();
+
+            // Recarga la tabla de usuarios
+            cargarUsuarios();
+        },
+        error: function (error) {
+            console.error('Error al editar el usuario:', error);
+        }
+    });
+});
+
+
+      // Función para cerrar el formulario de edición
+      function cerrarFormularioEdicion() {
+        $('#formularioEdicion').hide();
+        $('.overlay').hide();
+    }
+
+
+    });
+    </script>
+
+    <script src="{{ url_for('static', filename='js/scriptCalculadora.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scriptUsuarios.js') }}"></script>
+
+</body>
+
+</html>

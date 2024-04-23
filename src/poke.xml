@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pokemon>
+    <nombre>Pikachu</nombre>
+    <tipo>Eléctrico</tipo>
+    <habilidades>
+        <habilidad>Electrovoltio</habilidad>
+        <habilidad>Rayo</habilidad>
+        <habilidad>Impactrueno</habilidad>
+    </habilidades>
+    <evolucion>
+        <nombre>Pikachu</nombre>
+        <nivel>0</nivel>
+    </evolucion>
+    <evolucion>
+        <nombre>Raichu</nombre>
+        <nivel>16</nivel>
+        <condicion>Piedra Trueno</condicion>
+    </evolucion>
+    <descripcion>
+        Pikachu es un Pokémon roedor de color amarillo, con manchas café en la espalda y en las orejas. 
+        Tiene mejillas rojas, y en ellas puede almacenar electricidad. 
+        Usa su cola para absorber energía de otras fuentes. Es conocido por su gran velocidad y agilidad.
+    </descripcion>
+    <stats>
+        <salud>35</salud>
+        <ataque>55</ataque>
+        <defensa>40</defensa>
+        <ataque_especial>50</ataque_especial>
+        <defensa_especial>50</defensa_especial>
+        <velocidad>90</velocidad>
+    </stats>
+    <movimientos>
+        <movimiento>
+            <nombre>Impactrueno</nombre>
+            <tipo>Eléctrico</tipo>
+            <poder>120</poder>
+            <precision>70</precision>
+        </movimiento>
+        <movimiento>
+            <nombre>Rayo</nombre>
+            <tipo>Eléctrico</tipo>
+            <poder>90</poder>
+            <precision>100</precision>
+        </movimiento>
+        <movimiento>
+            <nombre>Cola Férrea</nombre>
+            <tipo>Acero</tipo>
+            <poder>75</poder>
+            <precision>100</precision>
+        </movimiento>
+        <movimiento>
+            <nombre>Rayo Carga</nombre>
+            <tipo>Eléctrico</tipo>
+            <poder>50</poder>
+            <precision>100</precision>
+        </movimiento>
+    </movimientos>
+</pokemon>

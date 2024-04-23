@@ -1,0 +1,142 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(45deg, #f9e9d2, #ffe1b0, #dfaa5f, #3a2606);
+    background-size: 400% 400%;
+    animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.login-container {
+    background-color: #7b572d;
+    width: 80%; /* Cambiado a porcentaje para ser más flexible */
+    max-width: 500px; /* Ajustado el ancho máximo */
+    margin: 0 auto;
+    margin-top: 10%; /* Cambiado a porcentaje para ser más flexible */
+    border-radius: 5px;
+    padding: 20px;
+    position: relative;
+    animation: drop 0.7s ease-in-out;
+}
+
+@keyframes drop {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+h2 {
+    color: #fff;
+    font-size: 2em; /* Cambiado a em para ser más flexible */
+    margin-bottom: 20px; /* Añadido para mejorar el espacio */
+    animation: moveLetters 1.7s infinite alternate;
+}
+
+@keyframes moveLetters {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(5px);
+    }
+}
+
+form {
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #fff;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 90%; /* Cambiado para ocupar el ancho completo */
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    background-color: #fff3ed;
+    border-radius: 3px;
+}
+
+button {
+    width: 90%; /* Cambiado para ocupar el ancho completo */
+    margin: 20px 0; /* Añadido espacio en la parte superior */
+    background-color: #352411;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #9f7e58;
+}
+
+.alert {
+    padding: 10px;
+    margin-top: 16px;
+    border: 2px solid #52400d;
+    background-color: #fff3cd;
+    color: #856404;
+    border-radius: 8px;
+}
+
+.alert-warning {
+    background-color: #ffd700;
+    color: #050504;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #724c05;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3a2410;
+}
+
+/* Media queries para hacer el diseño responsivo */
+@media only screen and (max-width: 768px) {
+    .login-container {
+        width: 80%;
+        max-width: 90%; /* Ajustar el ancho máximo */
+        margin-top: 20%; /* Ajustar el margen superior */
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    h2 {
+        font-size: 1.5em;
+    }
+    .login-container {
+        width: 80%;
+        max-width: 90%; /* Ajustar el ancho máximo */
+        margin-top: 20%; /* Ajustar el margen superior */
+    }
+}

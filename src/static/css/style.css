@@ -1,0 +1,705 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e7d2b0;
+    /* Color crema */
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Asegura que ocupa al menos el 100% de la altura de la ventana */
+    background: linear-gradient(45deg, #f9e9d2, #ffe1b0, #dfaa5f, #3a2606); /* Gradiente de fondo */
+    background-size: 400% 400%;
+    animation: gradientAnimation 10s ease infinite; /* Animación del gradiente */
+}
+
+h2 {
+    color: #fff;
+    font-size: 24px;
+    animation: moveLetters 0.6s infinite alternate;
+}
+
+form {
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #fff;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 95%;
+    padding: 10px;
+    margin-top: 10px;
+    /* Más margen arriba */
+    margin-right: 10px;
+    /* Margen derecho */
+    border: none;
+    background-color: #fff3ed;
+    /* Color crema */
+    border-radius: 3px;
+}
+
+button {
+    width: 80%;
+    margin: 20px auto;
+    /* Centrar y mover hacia abajo */
+    background-color: #352411;
+    /* Color café oscuro */
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    margin-left: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+
+header {
+    background-color: #352411; /* Fondo de color café oscuro para el menú */
+    padding: 15px 0;
+    border-bottom: 5px solid #352411;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    margin-left: 20px;
+}
+
+.logo img {
+    max-width: 150px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid #705b35;
+    border-radius: 5px;
+    margin-top: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: color 0.3s;
+}
+
+/* Boton de la calculadora ----------------------------*/
+.calculator-button {
+    position:absolute; /* Position */
+    top: 10%; /* Adjust top distance as needed */
+    right: -3%; /* Adjust right distance as needed */
+    transform: rotate(-90deg);
+    background: #41301c;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 1px solid #705b35;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 100;
+    border-radius: 15px;
+}
+
+
+/* Estilos para la calculadora */
+.calculator-container {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(136%, -86%);
+    background: #fff3ed; /* Color crema */
+    border: 2px solid #705b35; /* Borde de color café */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 300px; /* Ancho máximo de la calculadora */
+    text-align: center;
+}
+
+.calculator {
+    padding: 2px;
+}
+
+.calculator input {
+    width: 90%;
+    padding: 10px;
+    border: 2px solid #705b35;
+    border-radius: 5px;
+    margin-bottom: 1px;
+    font-size: 18px;
+    text-align: right;
+}
+
+.calculator .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    max-width: 100%;
+    margin: 1px; /* Agregar margen entre los botones */
+    margin-left: -40px;
+}
+
+.calculator button {
+    background: #41301c; /* Color café oscuro */
+    color: #fff;
+    padding: 1px; /* Reducir el tamaño de los botones */
+    border: 2px solid #705b35;
+    border-radius: 5px;
+    font-size: 12px; /* Reducir el tamaño del texto */
+    cursor: pointer;
+    text-align: center; /* Alinear el texto al centro del botón */
+}
+
+
+
+/* Acerca de */
+.about-section {
+    background-color: #f6ecd9;
+    padding: 10px;
+    border: 2px solid #d3c1a0;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    font-family: 'Courier New', monospace;
+    text-align: justify;
+    max-width: 800px;
+    margin: 15px auto;
+    transform: translateX(-75%); /* Iniciar el div fuera de la pantalla a la izquierda */
+    transition: transform 1.2s ease-in-out; /* Agregar una transición para la animación */
+}
+
+#TituloAcerca {
+    font-style: italic;
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+.about-section p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+
+/* Estilos para los recuadros de productos */
+/* Estilos para los recuadros de productos divididos en tres columnas */
+#catalogo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Divide en tres columnas */
+    gap: 20px; /* Espacio entre las columnas */
+    justify-content: center;
+}
+
+.card {
+    font-size: 16px;
+    font-weight: normal;
+    background-color: #FFFAF3;
+    color: #333;
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: 20px; /* Espacio entre los productos */
+}
+
+.card img {
+    width: 100%;
+    height: 150px; /* Altura más corta para los productos */
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.card h4 {
+    font-size: 18px; /* Tamaño del título del producto */
+    font-weight: bold;
+    color: #3F51B5;
+    margin: 10px 0;
+}
+
+.card p {
+    font-size: 14px; /* Tamaño de la descripción del producto */
+    margin: 10px 0;
+}
+
+
+/* Estilo para el div "Resumen de Compra" */
+.resumen-compra {
+    background-color: #fff3e6; /* Cambiar el color de fondo a crema */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; /* Añadir margen superior para separarlo del catálogo de productos */
+}
+
+h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #e7cfb3;
+}
+
+.resumen-compra h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #795521;
+}
+
+/* Ajustar el estilo del botón "Finalizar Compra" */
+.resumen-compra .btn-primary {
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #3F51B5;
+    border: none;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    margin-top: 20px; /* Añadir margen superior al botón */
+}
+
+
+/* Agrega espacio entre las columnas de la tabla */
+.table th,
+.table td {
+    padding: 10px 15px; /* Ajusta el valor según tus preferencias */
+}
+
+
+.container-form {
+    text-align: center;
+    background-color: #ac9576; /* Color de fondo crema */
+    padding: 20px; /* Espacio interno alrededor del formulario */
+    border: 1px solid #ccc; /* Borde del formulario */
+    display: inline-block;
+}
+
+.container-form h1 {
+    margin-bottom: 20px;
+}
+
+.container-form form {
+    text-align: left;
+}
+
+.container-form label,
+.container-form input {
+    display: block;
+    margin: 10px 0;
+    color: #000; /* Color de fuente negro */
+}
+
+.container-form button {
+    display: block;
+    margin: 10px auto;
+    color: #d1cfcf; /* Color de fuente negro */
+}
+
+/* Ajusta el margen y el padding del contenedor del formulario */
+.form-container {
+    background-color: #865d2e;
+    width: 60%;
+    margin: 20px auto; /* Ajusta el margen exterior del contenedor */
+    border-radius: 5px;
+    padding: 20px;
+    position: relative;
+}
+
+
+
+
+
+/*Tablas --------------------------------------- */
+/* Agrega margen a la tabla y espaciado entre celdas */
+table {
+    width: 85%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Agrega margen inferior */
+    margin-left: 7%;
+}
+
+th, td {
+    border: 4px solid #331212;
+    padding: 10px;
+}
+
+th {
+    background-color: #333;
+    color: #fff;
+}
+
+tbody tr {
+    background-color: #fff; /* Cambiar a un color sólido, por ejemplo, blanco */
+
+}
+tbody tr:nth-child(even) {
+    background-color: #b9aa89; /* Cambiar a un color sólido, por ejemplo, blanco */
+
+}
+
+
+
+/* imagen */
+img {
+    max-width: 100px;
+    height: auto;
+}
+
+
+/*Formulario de edicion------------------------------- */
+#formularioEdicion {
+    display: none;
+    background-color: #927847;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#formularioEdicion h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#formularioEdicion form {
+    display: flex;
+    flex-direction: column;
+}
+
+#formularioEdicion .mb-3 {
+    margin-bottom: 15px;
+}
+
+#formularioEdicion label {
+    font-weight: bold;
+}
+
+#formularioEdicion input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 100%;
+    height: 30px;
+    font-size: 16px;
+}
+
+#formularioEdicion button {
+    background-color: #725336;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Fondo difuminado */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0,0.5); /* Fondo oscuro difuminado */
+    z-index: 1;
+}
+
+/* Modal para el formulario de edición */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 2;
+}
+
+
+
+/* Botón de cierre */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.close-button::after {
+    content: "×";
+    font-size: 24px;
+    color: #000000;
+}
+/*Fin del formulario de edicion------------------------------------------*/
+
+/* Estilos para el botón de logout personalizado */
+a.btn-logout {
+    display: inline-block;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #d9534f; /* Color de fondo del botón de peligro */
+    border: 2px solid #d9534f; /* Borde del botón de peligro */
+    border-radius: 5px; /* Borde redondeado */
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Responsividad */
+@media only screen and (max-width: 780px) {
+    body {
+        font-size: 14px; /* Reducir el tamaño de la fuente en el cuerpo del documento */
+    }
+
+    h2 {
+        font-size: 18px; /* Reducir el tamaño de los encabezados h2 */
+    }
+
+    form {
+        text-align: center; /* Centrar el texto en formularios */
+    }
+
+    label {
+        margin-top: 5px; /* Reducir el margen superior de las etiquetas en formularios */
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 90%; /* Hacer que los campos de texto ocupen el 100% del ancho */
+        margin-right: 0; /* Eliminar el margen derecho en campos de texto */
+    }
+
+    button {
+        width: 100%; /* Hacer que los botones ocupen el 100% del ancho */
+        margin: 10px auto; /* Centrar los botones y agregar margen superior e inferior */
+        margin-left: 0; /* Eliminar el margen izquierdo en botones */
+    }
+
+    .header-container {
+        flex-direction: column; /* Cambiar la dirección del contenedor del encabezado a columna */
+        align-items: center; /* Centrar los elementos del encabezado */
+    }
+
+    nav ul {
+        flex-direction: column; /* Cambiar la dirección de la lista de navegación a columna */
+        align-items: center; /* Centrar los elementos de la lista de navegación */
+    }
+
+    nav ul li {
+        display: block; /* Cambiar elementos de lista en la barra de navegación a bloques */
+        margin-right: 0; /* Eliminar el margen derecho en elementos de la lista */
+        margin-bottom: 5px; /* Agregar espacio entre elementos de la lista */
+    }
+
+
+
+    .calculator-container {
+        max-width: 100%; /* Reducir el ancho máximo de la calculadora */
+        margin: 5px auto; /* Centrar y agregar margen superior e inferior */
+        position: fixed; /* Cambiar a posición fija */
+        top: 10px; /* Ajustar la posición desde la parte superior */
+        right: 10px; /* Ajustar la posición desde la parte derecha */
+        transform: translate(-50%, 0%); /* Centrar la calculadora en la pantalla */
+
+    }
+
+    .calculator {
+        max-width: 100%; /* Ajustar el ancho máximo de la calculadora */
+        margin: -30 auto; /* Centrar la calculadora en la pantalla */
+        text-align: center; /* Centrar el contenido */
+    }
+
+    .calculator input {
+        width: 70%; /* Reducir el ancho del input */
+        font-size: 14px; /* Reducir el tamaño de la fuente del input */
+        margin-bottom: 10px; /* Agregar espacio inferior */
+
+    }
+
+    .calculator button {
+        font-size: 12px; /* Reducir el tamaño del texto en los botones de la calculadora */
+        width: 45%; /* Reducir el ancho de los botones */
+        margin: 1px; /* Agregar margen entre los botones */
+        margin-left: 60px;
+    }
+
+    .about-section {
+        transform: translateX(0); /* Mover la sección Acerca de a la posición inicial */
+    }
+
+    #catalogo {
+        grid-template-columns: 1fr; /* Cambiar a una sola columna en el catálogo de productos */
+    }
+
+    .card {
+        margin-bottom: 10px; /* Reducir el espacio entre las tarjetas de productos */
+    }
+
+    .resumen-compra {
+        margin-top: 10px; /* Ajustar el margen superior del resumen de compra */
+    }
+
+    table {
+        margin-top: 10px; /* Ajustar el margen superior de las tablas */
+    }
+
+    .container-form {
+        background-color: #e7d2b0; /* Cambiar el color de fondo del formulario */
+        padding: 10px; /* Reducir el espacio interno */
+    }
+
+    .form-container {
+        width: 80%; /* Hacer que el contenedor del formulario ocupe el 100% del ancho */
+    }
+
+    #formularioEdicion {
+        width: 80%; /* Ajustar el ancho del formulario de edición */
+    }
+
+    .modal {
+        width: 80%; /* Ajustar el ancho del modal */
+    }
+}
+
+
+
+
+
+
+
+
+/*Animaciones -----------------------------------------------------------------------------------------*/
+@keyframes drop {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes moveLetters {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(5px);
+    }
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Al hacer hover sobre el div, mostrarlo en la posición original */
+.about-section:hover {
+    transform: translateX(0); /* Mover el div a su posición original (0%) */
+}
+
+.resumen-compra .btn-primary:hover {
+    background-color: #2A36B1;
+}
+
+nav ul li a:hover {
+    color: #9f7e58;
+}
+
+
+button:hover {
+    background-color: #9f7e58;
+    /* Cambio de color al pasar el mouse - color avellana */
+}
+
+.calculator-button:hover {
+    background: #9f7e58;
+}
+
+/* Cambio de color al hacer hover sobre los recuadros de productos */
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#formularioEdicion button:hover {
+    background-color: #0056b3;
+}
+
+a.btn-logout:hover {
+    background-color: #c9302c; /* Cambio de color al pasar el mouse */
+    border-color: #c9302c; /* Cambio de color del borde al pasar el mouse */
+}
+
+/* Barra de desplazamiento vertical */
+::-webkit-scrollbar {
+    width: 12px; /* Ancho de la barra de desplazamiento */
+    background-color: #e7d2b0; /* Fondo crema */
+}
+
+/* Barra de desplazamiento - Rail */
+::-webkit-scrollbar-track {
+    background: #e7d2b0; /* Fondo crema */
+}
+
+/* Barra de desplazamiento - Thumb */
+::-webkit-scrollbar-thumb {
+    background: #7b572d; /* Color café oscuro */
+    border-radius: 6px; /* Borde redondeado */
+}
+
+/* Barra de desplazamiento - Hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #9f7e58; /* Color avellana al pasar el mouse */
+    transition: background 0.3s ease-in-out; /* Transición de color */
+}
+

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Coffee & Dreams - Página Principal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Estilo para la ventana emergente */
+        .modal-container {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+        }
+
+        #detalleVentaTable tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    
+        #detalleVentaTable tbody tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Coffee & Dreams Logo">
+            <h2 id="username-display"></h2>
+            <h2>Coffee & Dreams (๑>◡<๑)</h2>
+            <h3>User: {{ current_user.fullname }}</h3>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('principal') }}">Inicio</a></li>
+                {% if current_user.usertype == 1 %}
+                    <li id="catalog-link"><a href="{{ url_for('mostrar_productos') }}" href="{{ url_for('catalogo') }}">Catálogo</a></li>
+                    <li><a href="{{ url_for('mostrar_usuarios') }}">Usuarios</a></li>
+                    <li><a href="{{ url_for('ventas') }}">Ventas</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('tienda') }}">Tienda</a></li>
+                <li><a href="{{ url_for('acerca') }}">Acerca de</a></li>
+            </ul>
+        </nav>
+        <h3></h3>
+        <a class="btn btn-logout" href="{{ url_for('logout') }}">LogOut</a>
+    </header>
+
+    <h1>Historial de Ventas</h1>
+
+    <input type="text" id="inputBusqueda" placeholder="Buscar venta por ID" style="width: 320px; padding: 10px; font-size: 20px; margin-left: 100px;">
+
+
+    <table border="1" id="tablaVentas">
+        <thead>
+            <tr>
+                <th>ID Venta</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
+            <tr>
+                <td>{{ venta.id }}</td>
+                <td>{{ venta.fecha }}</td>
+                <td>{{ venta.total }}</td>
+                <td>
+                    <!-- Botón para ver el detalle de la venta -->
+                    <button class="btn-ver-detalle" data-id="{{ venta.id }}" data-total="{{ venta.total }}" data-fecha="{{ venta.fecha }}">Ver Detalle</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Ventana emergente para mostrar el detalle de la venta -->
+    <div class="modal-container" id="detalleVentaModal">
+        <div class="modal-content">
+            <h1>Detalle de Venta</h1>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>ID Venta: <span id="detalleVentaId"></span></th>
+                        <th>Fecha: <span id="detalleFecha"></span></th>
+                    </tr>
+                </thead>
+            </table>
+            <table border="1" id="detalleVentaTable">
+                <thead>
+                    <tr>
+                        <th>ID Detalle</th>
+                        <th>ID Producto</th>
+                        <th>Nombre Producto</th>
+                        <th>Precio Unitario</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los detalles de la venta se llenarán aquí dinámicamente -->
+                </tbody>
+            </table>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Total de la Venta: <span id="totalVenta"></span></th>
+                    </tr>
+                </thead>
+            </table>
+            <button onclick="cerrarModal()">Cerrar</button>
+        </div>
+    </div>    
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Función para cerrar la ventana emergente
+    function cerrarModal() {
+        $('#detalleVentaModal').hide();
+    }
+
+    $(document).ready(function () {
+        // Evento clic para el botón "Ver Detalle"
+        $('.btn-ver-detalle').on('click', function () {
+            var ventaId = $(this).data('id');
+            var totalVenta = $(this).data('total');
+            var fechaVenta = $(this).data('fecha');
+            // Realizar solicitud AJAX para obtener los detalles de la venta
+            $.ajax({
+                type: "GET",
+                url: "/detalle_venta/" + ventaId,
+                success: function (response) {
+                    // Limpiar la tabla de detalles
+                    $('#detalleVentaTable tbody').empty();
+                    // Llenar la tabla con los detalles de la venta
+                    response.detalle_venta.forEach(function (detalle) {
+                        $('#detalleVentaTable tbody').append(
+                            `<tr>
+                                <td>${detalle.id}</td>
+                                <td>${detalle.producto_id}</td>
+                                <td>${detalle.nombre_producto}</td>
+                                <td>${detalle.precio_unitario}</td>
+                                <td>${detalle.cantidad}</td>
+                                <td>${detalle.subtotal}</td>
+                            </tr>`
+                        );
+                    });
+                    // Mostrar el total y la fecha de la venta
+                    $('#totalVenta').text(totalVenta);
+                    $('#detalleFecha').text(fechaVenta);
+                    // Mostrar la ventana emergente
+                    $('#detalleVentaId').text(ventaId);
+                    $('#detalleVentaModal').show();
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al obtener detalles de la venta:", error);
+                    console.error("Estado de la solicitud:", status);
+                    console.error("Respuesta completa:", xhr.responseText);
+                }
+            });
+        });
+
+        // Evento para detectar cambios en el campo de búsqueda
+        $('#inputBusqueda').on('keyup', function () {
+            var inputValor = $(this).val().trim();
+            if (inputValor === '') {
+                // Si el campo de búsqueda está vacío, mostrar todas las filas
+                $('#tablaVentas tbody tr').show();
+            } else {
+                $('#tablaVentas tbody tr').hide().filter(function () {
+                    var idVenta = $(this).find('td:first').text().trim();
+                    return idVenta.includes(inputValor);
+                }).show();
+            }
+        });
+    });
+</script>
+</body>
+</html>

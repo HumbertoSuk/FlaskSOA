@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style-ticket.css') }}">
+    <title>Ticket de Compra</title>
+</head>
+<body>
+    <h2>Ticket de Compra</h2>
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Coffee & Dreams Logo">
+    <h2>Coffee & Dreams (๑>◡<๑)</h2>
+
+    <h3>Usuario: {{ current_user.fullname }}</h3>
+
+    <p id="fecha-impresion">Fecha de Impresión: <span id="fecha"></span></p>
+
+    <table border="1" id="ticketTable">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <!-- Filas de compra se agregarán dinámicamente aquí -->
+    </table>
+    <p id="total-general">Total General: <span id="valortotal"></span></p>
+    <div class="notas">
+        <p>Gracias por comprar (￢‿￢ )</p>
+        <img src="{{ url_for('static', filename='img/coffee.gif') }}" alt="behhh">
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Obtener los datos de la compra almacenados localmente
+            var datosCompra = JSON.parse(localStorage.getItem('datosCompra'));
+            console.log('Datos de compra recuperados:', datosCompra);
+    
+            // Mostrar el ticket con los datos recuperados
+            mostrarTicket(datosCompra);
+    
+            function mostrarTicket(datosCompra) {
+                var totalGeneral = 0;
+                if (datosCompra && datosCompra.length > 0) {
+                    for (var i = 0; i < datosCompra.length; i++) {
+                        var row = "<tr>" +
+                            "<td>" + datosCompra[i].producto + "</td>" +
+                            "<td>" + datosCompra[i].cantidad + "</td>" +
+                            "<td>" + datosCompra[i].subtotal + "</td>" +
+                            "</tr>";
+                        $('#ticketTable').append(row);
+                        // Sumar al total general
+                        totalGeneral += parseFloat(datosCompra[i].subtotal);
+                    }
+                }
+                console.log('Total general:', totalGeneral);
+                // Mostrar el total general
+                $('#valortotal').text(totalGeneral.toFixed(2));
+
+                // Mostrar la fecha actual de impresión del ticket
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZone: 'America/Tijuana' };
+                var fechaActual = new Date().toLocaleString('es-MX', options);
+                $('#fecha').text(fechaActual);
+            }
+            
+            // Limpiar localStorage
+            localStorage.removeItem('datosCompra');
+        });
+    </script>
+    
+    
+</body>
+</html>
